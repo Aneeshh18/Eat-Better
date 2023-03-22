@@ -54,3 +54,7 @@ _redirects
 
 /coverage
 coverage/
+
+.vscode
+# Local Netlify folder
+.netlify

@@ -1,29 +1,19 @@
-const CORS_PROXY_URL = "/api/";
-
-
-export const API_URL = CORS_PROXY_URL + "/dapi/restaurants/list/v5?lat=26.8466937&lng=80.94616599999999&page_type=DESKTOP_WEB_LISTING";
-
-export const API_URL2 = CORS_PROXY_URL + "/dapi/restaurants/list/v5?lat=26.8466937&lng=80.94616599999999&sortBy=RELEVANCE&pageType=SEE_ALL&page_type=DESKTOP_SEE_ALL_LISTING";
+export const API_URL = "https://www.swiggy.com/dapi/restaurants/list/v5?lat=26.8466937&lng=80.94616599999999&page_type=DESKTOP_WEB_LISTING";
 
 
 // Image CDN URL for Restaurant card
 export const IMG_CDN_URL =
   "https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_508,h_320,c_fill/";
-
 export const ITEM_IMG_CDN_URL = "https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_1024/";
 
 
-
-export const FETCH_MENU_URL = CORS_PROXY_URL +"dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=26.8466937&lng=80.94616599999999&restaurantId=" ;
-
-
+//Fetching menu
+export const FETCH_MENU_URL =  "https://www.swiggy.com/dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=26.8466937&lng=80.94616599999999&restaurantId=" ;
 export const MENU_ITEM_TYPE_KEY = "type.googleapis.com/swiggy.presentation.food.v2.ItemCategory";
 export const RESTAURANT_TYPE_KEY = "type.googleapis.com/swiggy.presentation.food.v2.Restaurant";
 
 
-
-
-
+//My profile
 export const GITHUB_LINK = "https://github.com/Aneeshh18";
 export const GMAIL_LINK = "mailto:aneeshsahu18@gmail.com";
 export const LINKEDIN_LINK =

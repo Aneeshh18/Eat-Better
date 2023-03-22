@@ -1,80 +1,62 @@
 import { useState, useEffect, useRef } from "react";
-import { API_URL, API_URL2 } from "../config";
 import RestaurantCard from "./RestaurantCard";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
 import { filterData } from "../utils/helper";
 import useOnline from "../utils/useOnline";
+import { API_URL } from "../config";
 
 const Body = () => {
   const [searchText, setSearchText] = useState("");
   const [allRestaurants, setAllRestuarants] = useState([]);
   const [filteredRestaurants, setFilteredRestuarants] = useState([]);
-  const [offset, setOffset] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const totalOpenRestaurants = useRef(0);
+  const [hasMore, setHasMore] = useState(true);
+  const page = useRef(1);
 
-  async function getRestaurants(url) {
-    try {
+  useEffect(() => {
+    getRestaurants();
+  }, []);
 
-      const data = await fetch(url);
-      const json = await data.json();
-      if (url === API_URL) {
-        json?.data?.cards.forEach((card) => {
-          if (card.cardType === "seeAllRestaurants") {
-            setAllRestaurants(card?.data?.data?.cards);
-            setfilteredRestaurants(card?.data?.data?.cards);
-            totalOpenRestaurants.current =
-              card?.data?.data?.totalOpenRestaurants;
-          }
-        });
-      } else {
-        const arr = json?.data?.cards;
-        const restaurantList = arr.map((item) => {
-          return item?.data;
-        });
-        setAllRestaurants([...allRestaurants, ...restaurantList]);
-        setfilteredRestaurants([...filteredRestaurants, ...restaurantList]);
-        setIsLoading(false);
-      }
-    } catch (error) {
-      console.log("There was an error", error);
+  async function getRestaurants() {
+    setIsLoading(true);
+    const data = await fetch(API_URL);
+    const json = await data.json();
+    const restaurants = json?.data?.cards[2]?.data?.data?.cards;
+    if (restaurants && restaurants.length > 0) {
+      setAllRestuarants([...allRestaurants, ...restaurants]);
+      setFilteredRestuarants([...allRestaurants, ...restaurants]);
+      page.current += 1;
+      setHasMore(true);
+    } else {
+      setHasMore(false);
+    }
+    setIsLoading(false);
+  }
+
+  function handleScroll() {
+    if (
+      window.innerHeight + document.documentElement.scrollTop ===
+        document.documentElement.offsetHeight &&
+      !isLoading &&
+      hasMore
+    ) {
+      getRestaurants();
     }
   }
 
-
-
-  const handelInfiniteScroll = async () => {
-    try {
-      if (
-        window.innerHeight + document.documentElement.scrollTop + 10 >=
-          document.documentElement.scrollHeight &&
-        offset + 16 <= totalOpenRestaurants.current
-      ) {
-        setIsLoading(true);
-        setOffset(offset + 16);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
-    if (offset) {
-      getRestaurants(`${API_URL2}offset=${offset}&`);
-    }
-    window.addEventListener("scroll", handelInfiniteScroll);
-    return () => window.removeEventListener("scroll", handelInfiniteScroll);
-  }, [offset]);
-
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [isLoading, hasMore]);
 
   const isOnline = useOnline();
 
   if (!isOnline) {
     return <h1>🛑Offline!!Check Your Internet!</h1>;
   }
-
-
 
   //early return
   return allRestaurants?.length === 0 ? (
@@ -140,7 +122,6 @@ const Body = () => {
               );
             })
           )}
-          {isLoading && <Shimmer />}
         </div>
       </div>
     </>
