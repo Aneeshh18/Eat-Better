@@ -2,12 +2,15 @@
   "name": "react-app",
   "version": "1.0.0",
   "description": "Namaste react app",
-  "main": "App.js",
   "scripts": {
     "start": "parcel index.html",
     "test": "jest",
     "build": "parcel build index.html",
     "watch-test": "jest --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Aneeshh18/Eat-Better"
   },
   "author": "Aneesh Sahu",
   "license": "ISC",
