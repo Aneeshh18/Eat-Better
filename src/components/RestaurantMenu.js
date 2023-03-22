@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import {
   IMG_CDN_URL,
   ITEM_IMG_CDN_URL,
-  swiggy_menu_api_url,
+  FETCH_MENU_URL,
   MENU_ITEM_TYPE_KEY,
   RESTAURANT_TYPE_KEY,
 } from "../config";
@@ -22,7 +22,7 @@ const RestaurantMenu = () => {
 
   async function getRestaurantInfo() {
     try {
-      const response = await fetch(swiggy_menu_api_url + resId);
+      const response = await fetch(FETCH_MENU_URL + resId);
       const json = await response.json();
 
       // Set restaurant data

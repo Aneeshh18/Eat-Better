@@ -1,9 +1,9 @@
 const CORS_PROXY_URL = "/api/";
 
 
-API_URL = CORS_PROXY_URL + "/dapi/restaurants/list/v5?lat=26.8466937&lng=80.94616599999999&page_type=DESKTOP_WEB_LISTING";
+export const API_URL = CORS_PROXY_URL + "/dapi/restaurants/list/v5?lat=26.8466937&lng=80.94616599999999&page_type=DESKTOP_WEB_LISTING";
 
-API_URL2 = CORS_PROXY_URL + "/dapi/restaurants/list/v5?lat=26.8466937&lng=80.94616599999999&sortBy=RELEVANCE&pageType=SEE_ALL&page_type=DESKTOP_SEE_ALL_LISTING";
+export const API_URL2 = CORS_PROXY_URL + "/dapi/restaurants/list/v5?lat=26.8466937&lng=80.94616599999999&sortBy=RELEVANCE&pageType=SEE_ALL&page_type=DESKTOP_SEE_ALL_LISTING";
 
 
 // Image CDN URL for Restaurant card
@@ -14,7 +14,7 @@ export const ITEM_IMG_CDN_URL = "https://res.cloudinary.com/swiggy/image/upload/
 
 
 
-export const FETCH_MENU_URL ="https://www.swiggy.com/dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=26.8466937&lng=80.94616599999999&restaurantId=" ;
+export const FETCH_MENU_URL = CORS_PROXY_URL +"dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=26.8466937&lng=80.94616599999999&restaurantId=" ;
 
 
 export const MENU_ITEM_TYPE_KEY = "type.googleapis.com/swiggy.presentation.food.v2.ItemCategory";
