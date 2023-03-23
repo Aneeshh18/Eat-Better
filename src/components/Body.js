@@ -55,7 +55,11 @@ const Body = () => {
   const isOnline = useOnline();
 
   if (!isOnline) {
-    return <h1 className="m-10 flex justify-center text-center text-3xl font-bold font-sans">🛑Offline!!Check Your Internet!</h1>;
+    return (
+      <h1 className="m-10 flex justify-center text-center text-3xl font-bold font-sans">
+        🛑Offline!!Check Your Internet!
+      </h1>
+    );
   }
 
   //early return
@@ -111,12 +115,13 @@ const Body = () => {
           {filteredRestaurants?.length === 0 ? (
             <p className="w-full font-bold text-center">No Restaurants Found</p>
           ) : (
-            filteredRestaurants.map((restaurant) => {
+            filteredRestaurants.map((restaurant, index) => {
               return (
                 <Link
-                  key={restaurant.data.id}
-                  to={"/restaurant/" + restaurant.data.id}
+                  key={index}
+                  to={"/restaurant/" + restaurant.id}
                 >
+                  {" "}
                   <RestaurantCard {...restaurant.data} />
                 </Link>
               );

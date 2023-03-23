@@ -118,7 +118,7 @@ const RestaurantMenu = () => {
               {menuItems.map((item) => (
                 <div
                   className="flex justify-between m-5 p-5 border-b"
-                  key={item.id}
+                  key={item?.id}
                 >
                   <div className="flex gap-2 flex-col max-w-md pr-5">
                     <li className="font-poppins font-bold max-sm:text-sm">
