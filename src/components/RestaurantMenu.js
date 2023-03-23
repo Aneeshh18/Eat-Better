@@ -9,7 +9,7 @@ import {
 } from "../config";
 // import useRestaurant from "../utils/useRestaurant";
 import Shimmer from "./Shimmer";
-import { addItem, removeItem } from "../utils/cartSlice";
+import { addItem, decreamentItem } from "../utils/cartSlice";
 import { useDispatch } from "react-redux";
 
 const RestaurantMenu = () => {
@@ -62,7 +62,7 @@ const RestaurantMenu = () => {
   const handleAddFoodItem = (item) => {
     disptach(addItem(item));
   };
-  const handleDecreamentFoodItem = (item) => {
+  const handleDecFoodItem = (item) => {
     disptach(decreamentItem(item));
   };
 
