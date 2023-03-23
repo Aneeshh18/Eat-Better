@@ -1,5 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { Link, useLocation } from "react-router-dom";
 import { IMG_CDN_URL, ITEM_IMG_CDN_URL } from "../config";
 import { addItem, clearCart, removeItem } from "../utils/cartSlice";
 
@@ -21,6 +22,8 @@ const Cart = () => {
   const handleClearCart = () =>{
     dispatch(clearCart());
   };
+
+  const url = useLocation();
 
   const getItemCount = (item) => {
     const currentItem = cartItems.find((cartItem) => cartItem.id === item.id);
@@ -85,9 +88,13 @@ const Cart = () => {
         <span className=" text-lg" >Total</span>
         <span className=" text-lg" >&#8377;{ getTotal() / 100 }</span>
       </div>
+      {url.pathname !== "/checkout" && (
+        <Link to={"/checkout"}>
           <button className="font-poppins bg-slate-900 mt-4 p-2 text-white w-full">
             Checkout
           </button>
+        </Link>
+      )}
     </div>
   );
 };

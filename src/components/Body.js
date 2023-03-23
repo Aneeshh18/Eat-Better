@@ -55,7 +55,7 @@ const Body = () => {
   const isOnline = useOnline();
 
   if (!isOnline) {
-    return <h1>🛑Offline!!Check Your Internet!</h1>;
+    return <h1 className="m-10 flex justify-center text-center text-3xl font-bold font-sans">🛑Offline!!Check Your Internet!</h1>;
   }
 
   //early return
@@ -63,9 +63,9 @@ const Body = () => {
     <Shimmer />
   ) : (
     <>
-      <div className=" flex-grow">
+      <div className=" bg-slate-50 flex-grow">
         {/* {search bar} */}
-        <div className="my-12 flex items-center justify-center">
+        <div className="py-12 flex items-center justify-center">
           <div className="flex justify-between w-1/3 border border-slate-400 border-1 focus:w-2/3 ">
             <input
               data-testid="search-sinput"

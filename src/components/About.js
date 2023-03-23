@@ -9,7 +9,7 @@ const About = () => {
       <div className="flex flex-wrap flex-col m-10 text-center font-bold text-4xl height font-serif">
         <div>
           <h1>
-            Welcome to The world of{" "}
+            Welcome to The World of{" "}
             <span className="text-green-800 font-poppins">Tasty & Fresh </span> Food.
           </h1>
           "Eat Better Live Better"
