@@ -119,7 +119,7 @@ const Body = () => {
               return (
                 <Link
                   key={index}
-                  to={"/restaurant/" + restaurant.id}
+                  to={"/restaurant/" + restaurant.data.id}
                 >
                   {" "}
                   <RestaurantCard {...restaurant.data} />
