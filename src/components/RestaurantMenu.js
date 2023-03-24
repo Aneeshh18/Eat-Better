@@ -8,7 +8,7 @@ import {
   RESTAURANT_TYPE_KEY,
 } from "../config";
 // import useRestaurant from "../utils/useRestaurant";
-import Shimmer from "./Shimmer";
+import ShimmerMenu from "./ShimmerMenu";
 import { addItem, decreamentItem } from "../utils/cartSlice";
 import { useDispatch } from "react-redux";
 
@@ -68,7 +68,7 @@ const RestaurantMenu = () => {
 
 
   return !restaurant ? (
-    <Shimmer />
+    <ShimmerMenu />
   ) : (
     <div className="bg-slate-50 w-full">
       <div className="font-poppins flex gap-10 flex-wrap justify-center bg-[#171a29] text-white my-8 p-4 ">

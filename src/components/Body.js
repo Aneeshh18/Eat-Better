@@ -13,11 +13,14 @@ const Body = () => {
   const [offset, setOffset] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const totalOpenRestaurants = useRef(0);
+  const searchInputRef = useRef(null);
+
 
 
   
   async function getRestaurants(url) {
     try {
+      
       const data = await fetch(url);
       const json = await data.json();
       // console.log(json.data.cards);
@@ -75,7 +78,7 @@ const Body = () => {
     return () => window.removeEventListener("scroll", handelInfiniteScroll);
   }, [offset]);
 
-
+  
 
 
   const isOnline = useOnline();
@@ -98,16 +101,24 @@ const Body = () => {
         <div className="py-12 flex items-center justify-center">
           <div className="flex justify-between w-1/3 border border-slate-400 border-1 focus:w-2/3 ">
             <input
-              data-testid="search-sinput"
+              data-testid="search-input"
+              ref={searchInputRef}
               type="text"
               className="p-3 grow h-12 w-[90%] focus:outline-none"
-              placeholder="Search for restaurants"
+              placeholder="Search for Restaurants"
               value={searchText}
               onChange={(e) => {
                 setSearchText(e.target.value);
               }}
+              onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                  searchInputRef.current.blur(); // unfocus the input element
+                  document.getElementById("search-btn").click(); // trigger the search button click event
+                }
+              }}
             />
             <button
+              id="search-btn"
               data-testid="search-btn"
               className="p-3"
               onClick={() => {
