@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { IMG_CDN_URL, ITEM_IMG_CDN_URL } from "../config";
-import { addItem, clearCart, removeItem } from "../utils/cartSlice";
+import { addItem, clearCart, decreamentItem } from "../utils/cartSlice";
 
 
 const Cart = () => {
@@ -16,7 +16,7 @@ const Cart = () => {
   }
 
   const handleDecFoodItem = (item) => {
-    dispatch(removeItem(item));
+    dispatch(decreamentItem(item));
   }
 
   const handleClearCart = () =>{
