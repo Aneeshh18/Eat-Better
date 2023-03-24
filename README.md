@@ -1,5 +1,5 @@
 
-I Have Completed the project using [](https://-app.netlify.app/) from scratch using React.js and Parcel.js
+I Have Completed the project using [ EAT BETTER ](https://eatbetterr.netlify.app/) from scratch using React.js and Parcel.js
 
 ## 🔥 Clone this Repository
 You need to write the following commands on the terminal screen(in vscode) so that you can run this project locally.
