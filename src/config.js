@@ -1,11 +1,12 @@
 // const CORS_PROXY_URL = "https://cors-anywhere.herokuapp.com/"
 const CORS_PROXY_URL = "/api/"
 
-// export const API_URL = "https://www.swiggy.com/dapi/restaurants/list/v5?lat=26.8466937&lng=80.94616599999999&page_type=DESKTOP_WEB_LISTING";
 
 export const API_URL =
   CORS_PROXY_URL + "/dapi/restaurants/list/v5?lat=26.8466937&lng=80.94616599999999&page_type=DESKTOP_WEB_LISTING";
 
+export const API_URL3 =
+   CORS_PROXY_URL + "/dapi/restaurants/list/v5?lat=26.8466937&lng=80.94616599999999&sortBy=RELEVANCE&pageType=SEE_ALL&page_type=DESKTOP_SEE_ALL_LISTING&";
 
 // Image CDN URL for Restaurant card
 export const IMG_CDN_URL =

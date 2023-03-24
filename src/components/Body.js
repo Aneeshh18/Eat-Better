@@ -4,53 +4,79 @@ import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
 import { filterData } from "../utils/helper";
 import useOnline from "../utils/useOnline";
-import { API_URL } from "../config";
+import { API_URL, API_URL3 } from "../config";
 
 const Body = () => {
   const [searchText, setSearchText] = useState("");
-  const [allRestaurants, setAllRestuarants] = useState([]);
-  const [filteredRestaurants, setFilteredRestuarants] = useState([]);
+  const [allRestaurants, setAllRestaurants] = useState([]);
+  const [filteredRestaurants, setFilteredRestaurants] = useState([]);
+  const [offset, setOffset] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
-  const page = useRef(1);
+  const totalOpenRestaurants = useRef(0);
+
+
+  
+  async function getRestaurants(url) {
+    try {
+      const data = await fetch(url);
+      const json = await data.json();
+      // console.log(json.data.cards);
+      if (url === API_URL) {
+        json?.data?.cards.forEach((card) => {
+          //  console.log(card);
+          if (card.cardType === "seeAllRestaurants") {
+            setAllRestaurants(card?.data?.data?.cards);
+            setFilteredRestaurants(card?.data?.data?.cards);
+            totalOpenRestaurants.current =
+              card?.data?.data?.totalOpenRestaurants;
+          }
+        });
+      } else {
+        const arr = json?.data?.cards;
+        if (arr) {
+          const restaurantList = arr.map((item) => item?.data);
+          setAllRestaurants([...allRestaurants, ...restaurantList]);
+          setFilteredRestaurants([...filteredRestaurants, ...restaurantList]);
+          setIsLoading(false);
+        }
+      }
+    } catch (error) {
+      console.log("There was an error ", error);
+    }
+  }
+
+  const handelInfiniteScroll = async () => {
+    try {
+      if (
+        window.innerHeight + document.documentElement.scrollTop + 10 >=
+          document.documentElement.scrollHeight &&
+        offset + 16 <= totalOpenRestaurants.current
+      ) {
+        setIsLoading(true);
+        // await getRestaurants(`${API_URL}offset=${offset}&`);
+        setOffset(offset + 16);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
-    getRestaurants();
+    getRestaurants(API_URL);
+    setOffset(0);
   }, []);
 
-  async function getRestaurants() {
-    setIsLoading(true);
-    const data = await fetch(API_URL);
-    const json = await data.json();
-    const restaurants = json?.data?.cards[2]?.data?.data?.cards;
-    if (restaurants && restaurants.length > 0) {
-      setAllRestuarants([...allRestaurants, ...restaurants]);
-      setFilteredRestuarants([...allRestaurants, ...restaurants]);
-      page.current += 1;
-      setHasMore(true);
-    } else {
-      setHasMore(false);
-    }
-    setIsLoading(false);
-  }
-
-  function handleScroll() {
-    if (
-      window.innerHeight + document.documentElement.scrollTop ===
-        document.documentElement.offsetHeight &&
-      !isLoading &&
-      hasMore
-    ) {
-      getRestaurants();
-    }
-  }
-
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [isLoading, hasMore]);
+   console.log("useEffect called offset", offset);
+    if (offset) {
+      getRestaurants(`${API_URL3}offset=${offset}&`);
+    }
+    window.addEventListener("scroll", handelInfiniteScroll);
+    return () => window.removeEventListener("scroll", handelInfiniteScroll);
+  }, [offset]);
+
+
+
 
   const isOnline = useOnline();
 
@@ -86,7 +112,7 @@ const Body = () => {
               className="p-3"
               onClick={() => {
                 const filtedData = filterData(searchText, allRestaurants);
-                setFilteredRestuarants(filtedData);
+                setFilteredRestaurants(filtedData);
               }}
             >
               <svg
@@ -117,10 +143,7 @@ const Body = () => {
           ) : (
             filteredRestaurants.map((restaurant, index) => {
               return (
-                <Link
-                  key={index}
-                  to={"/restaurant/" + restaurant.data.id}
-                >
+                <Link key={index} to={"/restaurant/" + restaurant.data.id}>
                   {" "}
                   <RestaurantCard {...restaurant.data} />
                 </Link>
