@@ -17,19 +17,22 @@ import RestuarantMenu from "./RestaurantMenu";
 import Profile from "./Profile";
 import CartPage from "./CartPage";
 import Checkout from "./Checkout";
-import Success from "./Success.js" 
+import Success from "./Success.js";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "../utils/Store";
-
-
 
 const AppLayout = () => {
   return (
     <Provider store={store}>
       <Header />
-      <Outlet />
-      <Footer />
+      <div
+        className={`m-auto w-[80vw] min-w-[80vw] min-h-screen flex flex-col box-border border`}
+      >
+        
+        <Outlet />
+        <Footer />
+      </div>
     </Provider>
   );
 };
@@ -61,7 +64,7 @@ const appRouter = createBrowserRouter([
       },
       {
         path: "Help",
-        element: <Help/>,
+        element: <Help />,
       },
       {
         path: "/restaurant/:resId",

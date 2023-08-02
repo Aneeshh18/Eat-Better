@@ -1,6 +1,6 @@
 import { GITHUB_LINK, GMAIL_LINK, LINKEDIN_LINK } from "../config";
 import { SiGithub, SiLinkedin, SiGoogle } from "react-icons/si";
-import avatar from "../Images/avatar.jpg";
+import avatar from "../Images/myavatar.jpg";
 
 const Profile = () => {
   return (
@@ -8,7 +8,7 @@ const Profile = () => {
       <div className="flex flex-col justify-center items-center rounded-md mt-4 gap-5 shadow-lg border w-fit max-w-xs">
         <p className=" text-xl font-bold text-center py-2">About Me</p>
         <img
-          className="rounded-full w-[150px] h-[150px] border-none align-middle"
+          className=" w-[150px] h-[150px] border-none align-middle"
           src={avatar}
           alt="user photo"
         />

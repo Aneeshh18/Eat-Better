@@ -10,7 +10,9 @@ import {
 // import useRestaurant from "../utils/useRestaurant";
 import ShimmerMenu from "./ShimmerMenu";
 import { addItem, decreamentItem } from "../utils/cartSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import Cart from "./Cart";
+
 
 const RestaurantMenu = () => {
   const { resId } = useParams(); // call useParams and get value of restaurant id using object destructuring
@@ -66,6 +68,12 @@ const RestaurantMenu = () => {
     disptach(decreamentItem(item));
   };
 
+  const cartItems = useSelector((store) => store.cart.items);
+
+  const getItemCount = (item) => {
+    const currentItem = cartItems.find((cartItem) => item.id === cartItem.id);
+    return currentItem ? currentItem.quantity : 0;
+  };
 
   return !restaurant ? (
     <ShimmerMenu />
@@ -111,7 +119,7 @@ const RestaurantMenu = () => {
 
       <div className="flex">
         <div className="bg-white w-2/3 m-auto font-poppins flex p-3 justify-center">
-          <h1 >
+          <h1>
             <span className="text-2xl pt-4 font-bold">Recommended </span>
             <p className="text-xs font-thin ">{menuItems.length} ITEMS</p>
             <ul>
@@ -127,9 +135,9 @@ const RestaurantMenu = () => {
                     <div className="text-sm">
                       {item?.price > 0
                         ? new Intl.NumberFormat("en-IN", {
-                          style: "currency",
-                          currency: "INR",
-                        }).format(item?.price / 100)
+                            style: "currency",
+                            currency: "INR",
+                          }).format(item?.price / 100)
                         : " "}{" "}
                     </div>
                     <div className="text-[#666666] max-sm:mb-2 text-sm max-sm:text-sm">
@@ -158,6 +166,22 @@ const RestaurantMenu = () => {
             </ul>
           </h1>
         </div>
+        {cartItems.length === 0 ? (
+          <div className="hidden 2xl:block">
+            <div className="flex w-[508px] flex-col gap-4 justify-center items-center  m-8 p-8 bg-white shadow-md">
+              <img
+                className="w-96"
+                src={
+                  "https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto/2xempty_cart_yfxml0"
+                }
+                alt="empty cart"
+              />
+              <span className="font-poppins font-bold">Your cart is empty</span>
+            </div>
+          </div>
+        ) : (
+          <Cart className="hidden 2xl:block" />
+        )}
       </div>
     </div>
   );

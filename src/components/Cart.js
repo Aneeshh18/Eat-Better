@@ -67,7 +67,7 @@ const Cart = () => {
                 alt="Dish Image"
                 onError={(event) => (event.target.style.display = "block")}
               />
-              <div className="px-2 w-60 text-lg">{item?.name}</div>
+              <div className="px-2 w-60 text-lg">kadu</div>
               <div className="flex justify-between font-poppins w-20 h-7 border bg-slate-50 text-black py-[2px] px-2">
                 <button onClick={() => handleDecFoodItem(item)}>
                   -
@@ -78,7 +78,7 @@ const Cart = () => {
                 </button>
               </div>
               <div className="w-14 font-medium text-lg flex justify-center">
-                <span>&#8377;{(item?.price + 0.0) / 100}</span>
+                <span>&#8377;{(item.price + 0.0) / 100}</span>
               </div>
             </div>
           );
@@ -86,7 +86,7 @@ const Cart = () => {
       </div>
       <div className="flex justify-between pt-2 font-bold">
         <span className=" text-lg" >Total</span>
-        <span className=" text-lg" >&#8377;{ getTotal() / 100 }</span>
+        <span className=" text-lg" >&#8377;{(getTotal() + 0.0) / 100 }</span>
       </div>
       {url.pathname !== "/checkout" && (
         <Link to={"/checkout"}>

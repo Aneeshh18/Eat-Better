@@ -5,37 +5,39 @@ const RestaurantCard = ({
   name,
   cuisines,
   cloudinaryImageId,
-  area,
-  lastMileTravelString,
-  costForTwoString,
+  sla,
+  costForTwo,
   avgRating,
 }) => {
   return (
-    <div className="flex flex-col overflow-hidden m-3 p-3 w-72  rounded-sm hover:shadow-xl font-poppins bg-white shadow-sm hover:scale-110 transition-all duration-500">
+    <div className="flex flex-col overflow-hidden m-3 p-3 w-60  rounded-sm hover:shadow-xl duration-300 font-poppins bg-white shadow-sm">
       <img
+        loading="lazy"
         className="w-full border rounded-sm "
         src={IMG_CDN_URL + cloudinaryImageId}
         alt="image of a dish from the restaurant"
       />
-      <span className="block font-bold text-lg mt-3 ">{name}</span>
-      <span className="mt-3 text-gray-600">{cuisines.join(", ")}</span>
-      <span
-        className="w-12 text-center mt-3 border rounded-md text-white"
-        style={
-          avgRating >= 4
-            ? { backgroundColor: "#48c479" }
-            : avgRating >= 3
-            ? { backgroundColor: "#DB7C38" }
-            : avgRating === "--"
-            ? { backgroundColor: "#48c479" }
-            : { backgroundColor: "#E31837" }
-        }
-      >
+      <span className="block font-bold text-lg mt-3 ">
+        {name?.length > 20 ? name.slice(0, 20) + "..." : name}
+      </span>
+      <span className="mt-3 text-gray-600 text-xs">{cuisines.join(", ")}</span>
+      <div className="mt-3 mb-3 flex items-center justify-between">
+        <span
+          className="w-12 text-center border rounded-md text-white text-xs mr-2"
+          style={
+            avgRating >= 4
+              ? { backgroundColor: "#48c479" }
+              : avgRating >= 3
+              ? { backgroundColor: "#DB7C38" }
+              : avgRating === "--"
+              ? { backgroundColor: "#48c479" }
+              : { backgroundColor: "#E31837" }
+          }
+        >
         {avgRating} &#9733;
       </span>
-      <div className="flex gap-20  mt-5 ">
-        <span className="font-medium">{costForTwoString}</span>
-        <span className="font-medium">{lastMileTravelString}</span>
+        <span className="text-sm" >{costForTwo}</span>
+        <span className="text-sm" >{sla?.deliveryTime}min</span>
       </div>
     </div>
   );
