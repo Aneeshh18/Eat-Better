@@ -67,7 +67,7 @@ const Cart = () => {
                 alt="Dish Image"
                 onError={(event) => (event.target.style.display = "block")}
               />
-              <div className="px-2 w-60 text-lg">kadu</div>
+              <div className="px-2 w-60 text-lg">{item?.name}</div>
               <div className="flex justify-between font-poppins w-20 h-7 border bg-slate-50 text-black py-[2px] px-2">
                 <button onClick={() => handleDecFoodItem(item)}>
                   -
