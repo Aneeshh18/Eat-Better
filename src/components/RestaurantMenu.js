@@ -7,7 +7,6 @@ import {
   MENU_ITEM_TYPE_KEY,
   RESTAURANT_TYPE_KEY,
 } from "../config";
-// import useRestaurant from "../utils/useRestaurant";
 import ShimmerMenu from "./ShimmerMenu";
 import { addItem, decreamentItem } from "../utils/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -78,6 +77,7 @@ const RestaurantMenu = () => {
   return !restaurant ? (
     <ShimmerMenu />
   ) : (
+    <>
     <div className="bg-slate-50 w-full">
       <div className="font-poppins flex gap-10 flex-wrap justify-center bg-[#171a29] text-white my-8 p-4 ">
         {/* {console.log(restaurant?.data?.cards[0]?.card?.card?.info?.name)} */}
@@ -117,6 +117,14 @@ const RestaurantMenu = () => {
         </div>
       </div>
 
+
+      <div className=" new-menu  xl:pxx-[23rem] pl-10">
+            {/* {console.log("rerender")} */}
+            <div className="header text-[26px] font-semibold border-b-gray-800  text-gray-800 w-full border-b pb-2 pl-7 font-poppins">
+              Menu
+            </div>
+      </div>
+
       <div className="flex">
         <div className="bg-white w-2/3 m-auto font-poppins flex p-3 justify-center">
           <h1>
@@ -130,7 +138,7 @@ const RestaurantMenu = () => {
                 >
                   <div className="flex gap-2 flex-col max-w-md pr-5">
                     <li className="font-poppins font-bold max-sm:text-sm">
-                      {item.name}
+                      {item?.name}
                     </li>
                     <div className="text-sm">
                       {item?.price > 0
@@ -141,7 +149,7 @@ const RestaurantMenu = () => {
                         : " "}{" "}
                     </div>
                     <div className="text-[#666666] max-sm:mb-2 text-sm max-sm:text-sm">
-                      {item.description}
+                      {item?.description}
                     </div>
                   </div>
                   <div className=" w-28 flex flex-col justify-between items-center gap-3">
@@ -155,6 +163,7 @@ const RestaurantMenu = () => {
                         {" "}
                         -{" "}
                       </button>
+                      {getItemCount(item)}
                       <button onClick={() => handleAddFoodItem(item)}>
                         {" "}
                         +{" "}
@@ -184,6 +193,7 @@ const RestaurantMenu = () => {
         )}
       </div>
     </div>
+    </>
   );
 };
 

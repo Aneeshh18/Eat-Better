@@ -1,5 +1,5 @@
 import { useState } from "react";
-import logo from "../Images/lgo2.jpg";
+import logo from "../Images/logo.png";
 import { BsCart4 } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
