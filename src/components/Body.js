@@ -1,159 +1,107 @@
-import { useState, useEffect, useRef } from "react";
-import RestaurantCard from "./RestaurantCard";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { filterData, getNumberFromString  } from "../utils/helper";
+import debounce from "lodash/debounce";
+import RestaurantCard from "./RestaurantCard";
 import useOnline from "../utils/useOnline";
-import { API_URL, API_URL3 } from "../config";
+import { API_URL } from "../config";
+import Banner from "../Images/Banner.jpg";
 import BodyShimmer from "./BodyShimmer";
+import { filterData, getNumberFromString } from "../utils/helper";
 
 const Body = () => {
   const [searchText, setSearchText] = useState("");
   const [allRestaurants, setAllRestaurants] = useState([]);
   const [filteredRestaurants, setFilteredRestaurants] = useState([]);
-  const [offset, setOffset] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
-  const totalOpenRestaurants = useRef(0);
+  const isOnline = useOnline();
   const searchInputRef = useRef(null);
-  const [totalRestaurants, setTotalRestaurants] = useState(0);
-  const [isFetching, setIsFetching] = useState(false);
 
-  async function getRestaurants(url) {
-    try {
-      const data = await fetch(url);
-      const json = await data.json();
-      // console.log(json);
-      if (url === API_URL) {
+  useEffect(() => {
+    const getRestaurants = async () => {
+      try {
+        const data = await fetch(API_URL);
+        const json = await data.json();
+
         const resData =
           json?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle
             ?.restaurants;
-        //console.log(resData);
+        //console.log("Fetched data:", resData);
         setAllRestaurants(resData);
         setFilteredRestaurants(resData);
-        totalOpenRestaurants.current = json?.data?.data?.totalOpenRestaurants;
-        //console.log(totalOpenRestaurants.current);
-        setTotalRestaurants(20);
-      } else {
-        const arr = json?.data?.cards;
-        if (arr) {
-          const restaurantList = arr.map((item) => item?.data);
-          setAllRestaurants([...allRestaurants, ...restaurantList]);
-          setFilteredRestaurants([...filteredRestaurants, ...restaurantList]);
-          setIsLoading(false);
-        }
+      } catch (error) {
+        console.log("There was an error ", error);
       }
-    } catch (error) {
-      console.log("There was an error ", error);
-    }
-  }
-
-  const handelInfiniteScroll = async () => {
-    try {
-      if (
-        !isFetching && // Prevent additional fetches
-        window.innerHeight + document.documentElement.scrollTop + 10 >=
-          document.documentElement.scrollHeight &&
-        offset + 16 <= totalOpenRestaurants.current
-      ) {
-        setIsLoading(true);
-        // await getRestaurants(`${API_URL}offset=${offset}&`);
-        setOffset(offset + 16);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    getRestaurants(API_URL);
-    setOffset(0);
-
-    // Clean up the scroll event listener when the component unmounts
-    return () => {
-      window.removeEventListener("scroll", handelInfiniteScroll);
-      setIsFetching(false);
     };
-  }, [offset, isFetching]);
 
-  useEffect(() => {
-    console.log("useEffect called offset", offset);
-    if (offset) {
-      getRestaurants(`${API_URL3}offset=${offset}&`);
-    }
-    window.addEventListener("scroll", handelInfiniteScroll);
-    return () => window.removeEventListener("scroll", handelInfiniteScroll);
-  }, [offset]);
-
-  
-
+    getRestaurants();
+  }, []);
 
   const handleSearchInputChange = (e) => {
     setSearchText(e.target.value);
-    const filtedData = filterData(e.target.value, allRestaurants);
-    setFilteredRestaurants(filtedData);
+    const filteredData = filterData(e.target.value, allRestaurants);
+    console.log("Filtered restaurants:", filteredRestaurants);
+    setFilteredRestaurants(filteredData);
   };
 
-  function handleFilter(event) {
-    
+  const handleFilter = (event) => {
     if (event.target.tagName.toLowerCase() === "button") {
       // console.log(event.target.tagName);
       if (event.target.dataset.filtertype === "RELEVANCE") {
         setFilteredRestaurants(allRestaurants);
       } else if (event.target.dataset.filtertype === "DELIVERY_TIME") {
-        let rest = [...filteredRestaurants];
-        rest.sort((a, b) => a.info.sla.deliveryTime - b.info.sla.deliveryTime);
-        setFilteredRestaurants(rest);
+        let res = [...filteredRestaurants];
+        res.sort((a, b) => a.info.sla.deliveryTime - b.info.sla.deliveryTime);
+        setFilteredRestaurants(res);
       } else if (event.target.dataset.filtertype === "RATING") {
         // console.log(event.target.dataset.filtertype);
-        let rest = [...filteredRestaurants];
-        rest.sort((a, b) => b.info.avgRatingString - a.info.avgRatingString);
-        console.log(rest);
-        setFilteredRestaurants(rest);
+        let res = [...filteredRestaurants];
+        res.sort((a, b) => b.info.avgRatingString - a.info.avgRatingString);
+        console.log(res);
+        setFilteredRestaurants(res);
       } else if (event.target.dataset.filtertype === "COST_FOR_TWO_L2H") {
         // console.log(event.target.dataset.filtertype);
-        let rest = [...filteredRestaurants];
-        rest.sort(
+        let res = [...filteredRestaurants];
+        res.sort(
           (a, b) =>
             getNumberFromString(a.info.costForTwo) -
             getNumberFromString(b.info.costForTwo)
         );
-        setFilteredRestaurants(rest);
+        setFilteredRestaurants(res);
       } else if (event.target.dataset.filtertype === "COST_FOR_TWO_H2L") {
         // console.log(event.target.dataset.filtertype);
-        let rest = [...filteredRestaurants];
-        rest.sort(
+        let res = [...filteredRestaurants];
+        res.sort(
           (a, b) =>
             getNumberFromString(b.info.costForTwo) -
             getNumberFromString(a.info.costForTwo)
         );
-        setFilteredRestaurants(rest);
+        setFilteredRestaurants(res);
       }
     }
-  }
+  };
 
-
-  const isOnline = useOnline();
+  const debouncedSearch = useMemo(
+    () => debounce(handleSearchInputChange, 300),
+    []
+  );
 
   if (!isOnline) {
-    return (
-      <h1 className="m-10 flex justify-center text-center text-3xl font-bold font-sans">
-        🛑Offline!!Check Your Internet!
-      </h1>
-    );
+    return <OfflineMessage />;
   }
 
-  //early return
-  if (!allRestaurants || allRestaurants.length === 0) {
+  if (!allRestaurants || !allRestaurants.length) {
     return <BodyShimmer />;
   }
+
   return (
     <>
       <div className="w-[80vw] flex flex-col justify-center">
         <div className="bg-slate-50 flex flex-col items-center justify-center ">
-          <div className="banner-section relative h-[30rem] flex  items-center w-full">
+          <div className="banner-section relative h-[25rem] md:h-[30rem] lg:h-[30rem] flex  items-center w-full">
             <img
-              src="https://b.zmtcdn.com/web_assets/81f3ff974d82520780078ba1cfbd453a1583259680.png"
+              src={Banner}
               className="h-full w-full absolute object-cover text-opacity-95 "
               alt="food background image"
+              loading="lazy"
             ></img>
 
             {/* {search bar} */}
@@ -196,9 +144,9 @@ const Body = () => {
           {/* restaurants */}
 
           <div className="">
-            <div className="filterHeader lg:px-12 md:px-4 border-b-2 flex justify-between  my-8 ">
+            <div className="filterHeader lg:px-12 md:px-4 border-b-2 flex justify-between my-8 ">
               <span className="text-[26px] font-semibold  text-gray-800 whitespace-nowrap">
-                {totalRestaurants} restaurants
+                {filteredRestaurants.length} restaurants
               </span>
               <div
                 className="filterList flex gap-4 px-2   text-slate-600 whitespace-nowrap font-semibold"
@@ -261,5 +209,11 @@ const Body = () => {
     </>
   );
 };
+
+const OfflineMessage = () => (
+  <h1 className="m-4 md:m-10 text-center text-2xl md:text-3xl font-bold font-sans">
+    🛑 Offline!! Check Your Internet!
+  </h1>
+);
 
 export default Body;

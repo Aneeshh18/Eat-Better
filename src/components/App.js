@@ -29,7 +29,6 @@ const AppLayout = () => {
       <div
         className={`m-auto w-[80vw] min-w-[80vw] min-h-screen flex flex-col box-border border`}
       >
-        
         <Outlet />
         <Footer />
       </div>

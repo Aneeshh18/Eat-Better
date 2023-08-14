@@ -4,22 +4,20 @@ import { Link, useLocation } from "react-router-dom";
 import { IMG_CDN_URL, ITEM_IMG_CDN_URL } from "../config";
 import { addItem, clearCart, decreamentItem } from "../utils/cartSlice";
 
-
 const Cart = () => {
   const cartItems = useSelector((store) => store.cart.items);
 
   const dispatch = useDispatch();
 
-
-  const handleAddFoodItem = (item) =>{
+  const handleAddFoodItem = (item) => {
     dispatch(addItem(item));
-  }
+  };
 
   const handleDecFoodItem = (item) => {
     dispatch(decreamentItem(item));
-  }
+  };
 
-  const handleClearCart = () =>{
+  const handleClearCart = () => {
     dispatch(clearCart());
   };
 
@@ -47,14 +45,15 @@ const Cart = () => {
       <div className="flex justify-between mb-5 border-b-2 ">
         <div className="flex w-full pb-2 justify-between items-center">
           <span className="font-bold text-2xl"> Cart Items: </span>
-          <button className=" font-poppins bg-slate-900 px-2 py-1 text-white cursor-pointer"
-          onClick={handleClearCart}
+          <button
+            className=" font-poppins bg-slate-900 px-2 py-1 text-white cursor-pointer"
+            onClick={handleClearCart}
           >
             Clear Cart
           </button>
         </div>
       </div>
-      <div className="border-b-2">
+      <div className="border-b-2 overflow-y-auto max-h-[300px] lg:max-h-[500px]">
         {cartItems.map((item) => {
           return (
             <div
@@ -65,17 +64,14 @@ const Cart = () => {
                 className="w-48"
                 src={IMG_CDN_URL + item?.imageId}
                 alt="Dish Image"
+                loading="lazy"
                 onError={(event) => (event.target.style.display = "block")}
               />
               <div className="px-2 w-60 text-lg">{item?.name}</div>
               <div className="flex justify-between font-poppins w-20 h-7 border bg-slate-50 text-black py-[2px] px-2">
-                <button onClick={() => handleDecFoodItem(item)}>
-                  -
-                </button>
+                <button onClick={() => handleDecFoodItem(item)}>-</button>
                 <span>{getItemCount(item)}</span>
-                <button onClick={() => handleAddFoodItem(item)}>
-                  +
-                </button>
+                <button onClick={() => handleAddFoodItem(item)}>+</button>
               </div>
               <div className="w-14 font-medium text-lg flex justify-center">
                 <span>&#8377;{(item.price + 0.0) / 100}</span>
@@ -85,8 +81,8 @@ const Cart = () => {
         })}
       </div>
       <div className="flex justify-between pt-2 font-bold">
-        <span className=" text-lg" >Total</span>
-        <span className=" text-lg" >&#8377;{(getTotal() + 0.0) / 100 }</span>
+        <span className=" text-lg">Total</span>
+        <span className=" text-lg">&#8377;{(getTotal() + 0.0) / 100}</span>
       </div>
       {url.pathname !== "/checkout" && (
         <Link to={"/checkout"}>

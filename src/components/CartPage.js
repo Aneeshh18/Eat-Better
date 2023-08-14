@@ -4,46 +4,45 @@ import { Link } from "react-router-dom";
 import { clearCart } from "../utils/cartSlice";
 import Cart from "./Cart";
 
-
+const EMPTY_CART_IMAGE_URL =
+  "https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto/2xempty_cart_yfxml0";
 
 const CartPage = () => {
+  const dispatch = useDispatch();
+  const { items: cartItems } = useSelector((store) => store.cart);
 
-    const dispatch = useDispatch();
-    const cartItems = useSelector((store) => store.cart.items);
-    const handleClearCart = () => {
-        dispatch(clearCart());
-};
+  const handleClearCart = () => {
+    dispatch(clearCart());
+  };
 
-return (
-    <div className="flex h-screen justify-center  bg-slate-50">
-      {!cartItems.length ? (
-        <div className="flex flex-col gap-2 justify-center items-center">
-          <img
-            className="w-96"
-            src={
-              "https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto/2xempty_cart_yfxml0"
-            }
-            alt="empty cart"
-          />
-          
-          <span className="font-fira-code">Your Cart Is Empty!!</span>
+  return (
+    <div className="flex flex-col items-center justify-center min-h-screen bg-slate-50 p-4 md:p-8">
+      <div className="max-w-lg mx-auto">
+        {cartItems.length ? (
+          <Cart />
+        ) : (
+          <div className="flex flex-col items-center space-y-4">
+            <img
+              className="w-60 md:w-80"
+              src={EMPTY_CART_IMAGE_URL}
+              alt="Your cart is currently empty."
+              loading="lazy"
+            />
 
-          <div className="">
+            <h2 className="text-2xl md:text-3xl font-semibold mt-4">
+              Your Cart Is Empty
+            </h2>
+
             <Link to="/">
-              <button className="font-fira-code rounded-sm bg-slate-900 p-2 text-white mt-2">
-                See Restaurants Near You
+              <button className="py-2 px-4 bg-slate-900 text-white rounded-sm shadow-md hover:bg-black mt-4">
+                Explore Restaurants
               </button>
             </Link>
           </div>
-        </div>
-      ) : (
-        <Cart />
-      )}
+        )}
+      </div>
     </div>
   );
 };
 
 export default CartPage;
-
-
-
