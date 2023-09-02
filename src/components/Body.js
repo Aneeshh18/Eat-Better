@@ -18,17 +18,37 @@ const Body = () => {
   useEffect(() => {
     const getRestaurants = async () => {
       try {
-        const data = await fetch(API_URL);
-        const json = await data.json();
-
-        const resData =
-          json?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle
-            ?.restaurants;
-        //console.log("Fetched data:", resData);
-        setAllRestaurants(resData);
-        setFilteredRestaurants(resData);
+        const response = await fetch(API_URL);
+        // if response is not ok then throw new Error
+        if (!response.ok) {
+          const err = response.status;
+          throw new Error(err);
+        } else {
+          const json = await response.json();
+  
+          // initialize checkJsonData() function to check Swiggy Restaurant data
+          async function checkJsonData(jsonData) {
+            for (let i = 0; i < jsonData?.data?.cards.length; i++) {
+  
+              // initialize checkData for Swiggy Restaurant data
+              let checkData = json?.data?.cards[i]?.card?.card?.gridElements?.infoWithStyle?.restaurants;
+  
+              // if checkData is not undefined then return it
+              if (checkData !== undefined) {
+                return checkData;
+              }
+            }
+          }
+  
+          // call the checkJsonData() function which return Swiggy Restaurant data
+          const resData = await checkJsonData(json);
+  
+          // update the state variable restaurants with Swiggy API data
+          setAllRestaurants(resData);
+          setFilteredRestaurants(resData);
+        }
       } catch (error) {
-        console.log("There was an error ", error);
+        console.error(error); 
       }
     };
 
