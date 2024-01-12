@@ -11,7 +11,7 @@ const CartPage = () => {
   const dispatch = useDispatch();
   const { items: cartItems } = useSelector((store) => store.cart);
 
-  const handleClearCart = () => {
+  const handleClearCart = () => {s
     dispatch(clearCart());
   };
 
