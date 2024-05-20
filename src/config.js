@@ -3,14 +3,15 @@ export const API_URL =
 
 // Image CDN URL for Restaurant card
 export const IMG_CDN_URL =
-  "https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_508,h_320,c_fill/";
+  // "https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_508,h_320,c_fill/";
+  "https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_508,h_320,c_fill/";
 export const ITEM_IMG_CDN_URL =
-  "https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_1024/";
+  // "https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_1024/";
+  "https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_208,h_208,c_fit/";
 
 //Fetching menu
 export const FETCH_MENU_URL =
   "https://eat-better-server.onrender.com/api/menu?page-type=REGULAR_MENU&complete-menu=true&lat=26.8466937&lng=80.94616599999999&restaurantId=";
-
 
 export const MENU_ITEM_TYPE_KEY =
   "type.googleapis.com/swiggy.presentation.food.v2.ItemCategory";
